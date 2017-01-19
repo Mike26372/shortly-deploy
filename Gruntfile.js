@@ -50,6 +50,14 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
+      options: {
+        keepSpecialComments: 0
+      },
+      dist: {
+        files: {
+          'public/dist/style.min.css': 'public/style.css'
+        }
+      }
     },
 
     watch: {
