@@ -4,14 +4,16 @@ var expect = require('chai').expect;
 var app = require('../server-config.js');
 
 var db = require('../app/config');
-var User = require('../app/models/user');
-var Link = require('../app/models/link');
+var User = db.User;
+var Link = db.Link;
+// var User = require('../app/models/user');
+// var Link = require('../app/models/link');
 
 /////////////////////////////////////////////////////
 // NOTE: these tests are designed for mongo!
 /////////////////////////////////////////////////////
 
-xdescribe('', function() {
+describe('', function() {
 
   beforeEach(function(done) {
     // Log out currently signed in user
@@ -20,10 +22,13 @@ xdescribe('', function() {
       .end(function(err, res) {
 
         // Delete objects from db so they can be created later for the test
-        Link.remove({url: 'http://www.roflzoo.com/'}).exec();
-        User.remove({username: 'Savannah'}).exec();
-        User.remove({username: 'Phillip'}).exec();
-
+        Link.remove().exec();
+        User.remove().exec();
+        // User.remove().exec();
+        // console.log('Database: ', User.find({}));
+        // User.find({}).then((users) => {
+        //   console.log('Database Test: ', users);
+        // });
         done();
       });
   });

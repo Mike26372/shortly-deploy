@@ -9,11 +9,14 @@ var path = require('path');
 // var db = require('bookshelf')(knex);
 
 var mongoose = require('mongoose');
-var connection = mongoose.createConnection('mongodb://localhost/db_name');
+//var connection = mongoose.createConnection('mongodb://localhost/shortly');
+var connection = mongoose.connect('mongodb://localhost/shortly');
 var Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
+var crypto = require('crypto');
+
 
 
 // Initialize auto-increment package
@@ -29,8 +32,8 @@ var userSchema = new Schema({
 
 var urlSchema = new Schema({
   url: { type: String, required: true },
-  baseUrl: { type: String, required: true },
-  code: { type: String, required: true },
+  baseUrl: { type: String }, // , required: true 
+  code: { type: String },
   title: { type: String, required: true },
   visits: Number,
   createdAt: Date,
@@ -56,22 +59,23 @@ userSchema.pre('save', function(next) {
   if (!this.createdAt) {
     this.createdAt = currentDate;
   }
-
-  bcrypt.hash(this.password, null, null, function(err, hash) {
+  bcrypt.hash(this.password, null, null, (err, hash) => {
     if (err) {
       console.error(err);
     } else {
       this.password = hash;
     }
-  }).bind(this);
-
-  next();
+    next();
+  });
 });
 
-// urlSchema.pre('save', function(next) {
-//   // THIS IS WHERE WE CRYPTO THE CODE
-//   next();
-// });
+urlSchema.pre('save', function(next) {
+  var shasum = crypto.createHash('sha1');
+  shasum.update(this.url);
+  this.code = shasum.digest('hex').slice(0, 5);
+  // model.set('code', shasum.digest('hex').slice(0, 5));// THIS IS WHERE WE CRYPTO THE CODE
+  next();
+});
 
 module.exports.User = User;
 module.exports.Link = Link;
