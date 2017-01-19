@@ -10,7 +10,7 @@ var path = require('path');
 
 var mongoose = require('mongoose');
 //var connection = mongoose.createConnection('mongodb://localhost/shortly');
-var connection = mongoose.connect('mongodb://localhost/shortly');
+var connection = mongoose.connect('mongodb://198.199.104.168:27017/shortly');
 var Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
 var bcrypt = require('bcrypt-nodejs');
