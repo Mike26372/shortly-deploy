@@ -22,13 +22,10 @@ describe('', function() {
       .end(function(err, res) {
 
         // Delete objects from db so they can be created later for the test
-        Link.remove().exec();
-        User.remove().exec();
-        // User.remove().exec();
-        // console.log('Database: ', User.find({}));
-        // User.find({}).then((users) => {
-        //   console.log('Database Test: ', users);
-        // });
+        Link.remove({url: 'http://www.roflzoo.com/'}).exec();
+        User.remove({username: 'Savannah'}).exec();
+        User.remove({username: 'Phillip'}).exec();
+
         done();
       });
   });
