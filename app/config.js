@@ -1,14 +1,6 @@
 var path = require('path');
-// var knex = require('knex')({
-//   client: 'sqlite3',
-//   connection: {
-//     filename: path.join(__dirname, '../db/shortly.sqlite')
-//   },
-//   useNullAsDefault: true
-// });
-// var db = require('bookshelf')(knex);
-
 var mongoose = require('mongoose');
+//
 //var connection = mongoose.createConnection('mongodb://localhost/shortly');
 var connection = mongoose.connect('mongodb://198.199.104.168:27017/shortly');
 var Schema = mongoose.Schema;
@@ -16,8 +8,6 @@ var autoIncrement = require('mongoose-auto-increment');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 var crypto = require('crypto');
-
-
 
 // Initialize auto-increment package
 autoIncrement.initialize(connection);
@@ -73,7 +63,6 @@ urlSchema.pre('save', function(next) {
   var shasum = crypto.createHash('sha1');
   shasum.update(this.url);
   this.code = shasum.digest('hex').slice(0, 5);
-  // model.set('code', shasum.digest('hex').slice(0, 5));// THIS IS WHERE WE CRYPTO THE CODE
   next();
 });
 
